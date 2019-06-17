@@ -35,19 +35,33 @@
 		}
 		SalaryCalculatorModel.prototype.calculate = function() {
 			var gross = this.basic + this.hra + this.da;
-			var net = gross * (100-(this.tax/100));
+			var net = gross * ((100-this.tax)/100);
 			this.salary = net;
 		};
 
 		//UI
 		$(function(){
-			var model = new SalaryCalculatorModel();
+			window['model'] = new SalaryCalculatorModel();
+
+			$('#txtBasic').change(function(){	
+				model.basic = $(this).val().toInt();
+			});
+
+			$('#txtHra').change(function(){	
+				model.hra = $(this).val().toInt();
+			});
+
+			$('#txtDa').change(function(){	
+				model.da = $(this).val().toInt();
+			});
+
+			$('#rangeTax').change(function(){	
+				model.tax = $(this).val().toInt();
+			});
+
+
 			$('#btnCalculate').click(function(){
 
-				model.basic = $('#txtBasic').val().toInt();
-				model.hra = $('#txtHra').val().toInt();
-				model.da = $('#txtDa').val().toInt();
-				model.tax = $('#rangeTax').val().toInt();
 
 				model.calculate();
 
