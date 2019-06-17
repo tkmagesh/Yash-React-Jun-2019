@@ -1,0 +1,17 @@
+functional programming
+function invocation patterns
+	- as a function
+	- as a method
+	- using the 'call' method
+	- using the 'apply' method
+	- immediately invoked function expression (IIFE)
+	- using the 'new' keyword
+closures
+invocation context (this)
+	- 'bind' method
+prototypal inheritence
+
+1. secrets of javascript ninja - book
+2. http://freecodecamp.org
+3. http://bit.ly/javascript-training-videos
+
