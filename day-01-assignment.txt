@@ -1,0 +1,17 @@
+http://es6-features.org
+
+let
+const
+destructuring (array, object)
+rest operator (array, object)
+spread operator (array, object)
+default arguments
+arrow functions
+classes
+
+
+Array methods
+	forEach
+	map
+	reduce
+	filter
