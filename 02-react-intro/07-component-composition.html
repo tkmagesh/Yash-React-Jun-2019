@@ -17,8 +17,12 @@
 			font-size: 18pt;
 			padding-right: 10px;
 		}
-		#tdSalary{
+		
+		.poorSalary{
 			color : red;
+		}
+		.goodSalary{
+			color : green
 		}
 	</style>
 	<script src="react.development.js"></script>
@@ -75,18 +79,9 @@
 					data = model.toJSON();
 				return(
 					<section>
-						<div className="field">
-							<label htmlFor="">Basic :</label>
-							<input type="number" onChange={ evt => model.set('basic', evt.currentTarget.valueAsNumber ) }/>
-						</div>
-						<div className="field">
-							<label htmlFor="">HRA :</label>
-							<input type="number" onChange={ evt => model.set('hra', evt.currentTarget.valueAsNumber ) }/>
-						</div>
-						<div className="field">
-							<label htmlFor="">DA :</label>
-							<input type="number" onChange={ evt => model.set('da', evt.currentTarget.valueAsNumber ) }/>
-						</div>
+						<SalaryCalculatorInput labelText="Basic :" onValueChange={ value => model.set('basic', value) }/>
+						<SalaryCalculatorInput labelText="HRA :" onValueChange={ value => model.set('hra', value) }/>
+						<SalaryCalculatorInput labelText="DA :" onValueChange={ value => model.set('da', value) }/>
 						<div className="field">
 							<label htmlFor="">Tax :</label>
 							<input type="range" min="0" max="30" defaultValue="0" onChange={ evt => model.set('tax', evt.currentTarget.valueAsNumber ) }/>
@@ -94,24 +89,45 @@
 						<div className="field">
 							<input type="button" value="Calculate" onClick={ () => model.calculate() } />
 						</div>
-						<div className="field">
-							<table>
-								<tbody>
-									<tr>
-										<td>{data.basic}</td>
-										<td>{data.hra}</td>
-										<td>{data.da}</td>
-										<td>{data.tax}</td>
-										<td>{data.salary}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+						<SalaryCalculatorResult data={data}/>
 					</section>
 				);
 			}
 		}
 
+		class SalaryCalculatorInput extends React.Component{
+			render(){
+				let { labelText, onValueChange } = this.props;
+				return(
+					<div className="field">
+						<label htmlFor="">{labelText}</label>
+						<input type="number" onChange={ evt => onValueChange(evt.currentTarget.valueAsNumber ) }/>
+					</div>
+				)
+			}
+		}
+
+		class SalaryCalculatorResult extends React.Component{
+			render(){
+				let { data } = this.props,
+					{ salary, basic, hra, da, tax } = data;
+				return(
+					<div className="field">
+						<table>
+							<tbody>
+								<tr>
+									<td>{basic || 0}</td>
+									<td>{hra || 0}</td>
+									<td>{da || 0}</td>
+									<td>{tax || 0}</td>
+									{!salary ? null : (salary >= 10000 ? (<td className="goodSalary">{salary}</td>) : (<td className="poorSalary">{salary}</td>))}
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				)
+			}
+		}
 		var model = new SalaryCalculatorModel();
 		function renderCalculator(){
 			ReactDOM.render(<SalaryCalculator model={model}/>,
