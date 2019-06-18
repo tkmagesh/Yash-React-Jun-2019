@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Component Intro</title>
+	<style>
+		.highlight{
+			color : blue;
+			font-size : 18pt;
+		}
+	</style>
+	<script src="react.development.js"></script>
+	<script src="react-dom.development.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class Greeter extends React.Component{
+
+			txtUserNameRef = React.createRef();
+			
+			state = { message : '[Dummy greet message]' };
+
+			onGreetClick = () => {
+				let userName = this.txtUserNameRef.current.value;
+				let greetMessage = `Hi ${userName}, ${this.props.msg}`;
+				this.setState({ message : greetMessage });
+			}
+			render(){
+
+				return(
+					<section>
+						<h1>Greeter</h1>
+						<hr/>
+						<label htmlFor="">User Name :</label>
+						<input type="text" name="" id="" ref={this.txtUserNameRef} />
+						<input type="button" value="Greet" onClick={this.onGreetClick} />
+						<div className="highlight">{this.state.message}</div>
+					</section>
+				)
+			}
+		}
+
+		ReactDOM.render(
+			<div>
+				<Greeter msg="Have a good day!" xyz="100" abc="200"/>
+				<Greeter msg="Have a nice day!" xyz="100" abc="200"/>
+			</div>,
+			document.getElementById('root'));
+	</script>
+</head>
+<body>
+	<div id="root">
+		
+	</div>
+</body>
+</html>
