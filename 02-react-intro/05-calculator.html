@@ -3,21 +3,56 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Calculator</title>
+	<script src="react.development.js"></script>
+	<script src="react-dom.development.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class Calculator extends React.Component{
+			state = { result : 0, n1 : 0, n2 : 0 }
+
+			
+			onAddClick = () => {
+				let { n1, n2 } = this.state;
+				this.setState({ result : n1 + n2});
+			}
+			onSubtractClick = () => {
+				let { n1, n2 } = this.state;
+				this.setState({ result : n1 - n2});
+			}
+			onMultiplyClick = () => {
+				let { n1, n2 } = this.state;
+				this.setState({ result : n1 * n2});
+			}
+			onDivideClick = () => {
+				let { n1, n2 } = this.state;
+				this.setState({ result : n1 / n2});
+			}
+			render(){
+				return(
+					<section>
+						<h1>Calculator</h1>
+						<hr/>
+						<input type="number" onChange={evt => this.setState({n1 : evt.currentTarget.valueAsNumber})}/>
+						<input type="number" onChange={evt => this.setState({n2 : evt.currentTarget.valueAsNumber})}/>
+						<br/>
+						<input type="button" value="Add" onClick={this.onAddClick} />
+						<input type="button" value="Subtract" onClick={this.onSubtractClick} />
+						<input type="button" value="Multiply" onClick={this.onMultiplyClick} />
+						<input type="button" value="Divide" onClick={this.onDivideClick} />
+						<div>{this.state.result}</div>
+					</section>
+				)
+			}
+		}
+
+		ReactDOM.render(<Calculator/>,
+			document.getElementById('root'));
+
+	</script>
 </head>
 <body>
 	<div id="root">
-		<section>
-			<h1>Calculator</h1>
-			<hr>
-			<input type="number">
-			<input type="number">
-			<br>
-			<input type="button" value="Add">
-			<input type="button" value="Subtract">
-			<input type="button" value="Multiply">
-			<input type="button" value="Divide">
-			<div>[Result]</div>
-		</section>
+		
 	</div>
 </body>
 </html>

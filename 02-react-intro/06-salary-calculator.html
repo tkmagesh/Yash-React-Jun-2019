@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Salary Calculator</title>
+	<style>
+		body{
+			margin-left: 50px;
+		}
+		.field{
+			margin-bottom: 10px;
+		}
+		label{
+			display: block;
+		}
+		td{
+			font-size: 18pt;
+			padding-right: 10px;
+		}
+		#tdSalary{
+			color : red;
+		}
+	</style>
+	<script src="react.development.js"></script>
+	<script src="react-dom.development.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class SalaryCalculator extends React.Component{
+			
+			render(){
+				return(
+					<section>
+						<div className="field">
+							<label htmlFor="">Basic :</label>
+							<input type="number" />
+						</div>
+						<div className="field">
+							<label htmlFor="">HRA :</label>
+							<input type="number" />
+						</div>
+						<div className="field">
+							<label htmlFor="">DA :</label>
+							<input type="number" />
+						</div>
+						<div className="field">
+							<label htmlFor="">Tax :</label>
+							<input type="range" min="0" max="30" defaultValue="0" />
+						</div>
+						<div className="field">
+							<input type="button" value="Calculate" id="btnCalculate" />
+						</div>
+						<div className="field">
+							<table>
+								<tbody>
+									<tr>
+										<td id="tdBasic">[data.basic]</td>
+										<td id="tdHra">[data.hra]</td>
+										<td id="tdDa">[data.da]</td>
+										<td id="tdTax">[data.tax]</td>
+										<td id="tdSalary">[data.salary]</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</section>
+				);
+			}
+		}
+
+		ReactDOM.render(<SalaryCalculator/>,
+			document.getElementById('root'));
+	</script>
+</head>
+<body>
+	<h1>Salary Calculator</h1>
+	<hr/>
+	<div id="root"></div>
+</body>
+</html>
