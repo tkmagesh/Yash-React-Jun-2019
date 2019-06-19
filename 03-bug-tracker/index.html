@@ -73,16 +73,63 @@
 			}
 		}
 
+		class BugModel extends EventEmitter{
+			name = '';
+			isClosed = false;
+
+			constructor(_name){
+				this.name = _name;
+			}
+
+			toggle(){
+				this.isClosed = !this.isClosed
+				this.triggerChange();
+			}
+		}
+
 		class BugsCollection extends EventEmitter{
-			_list = [];
+			_list = [
+				new BugModel('Server communication failure'),
+				new BugModel('User actions not recognized'),
+				new BugModel('Application not responding'),
+			];
 
 			getAll(){
 				return [...this._list];
 			}
 
 			addNew(bugName){
-				this._list.push(bugName);
+				let newBug = new BugModel(bugName);
+				this._list.push(newBug);
 				this.triggerChange();
+			}
+
+			toggle(bug){
+				bug.isClosed = !bug.isClosed;
+				this.triggerChange();
+			}
+		}
+
+		class BugItem extends React.Component{
+			state = {
+				isClosed : false
+			};
+
+			onBugNameClick = () => {
+				let { bug } = this.props;
+				bug.toggle();
+				console.log(bug);
+			}
+			render(){
+				let { bug } = this.props;
+				return(
+					<li>
+						<span className="bugname" onClick={this.onBugNameClick}>
+							{JSON.stringify(bug)}
+						</span>
+						<div className="datetime">[Created At]</div>
+					</li>
+				)
 			}
 		}
 
@@ -95,15 +142,13 @@
 				let { collection } = this.props,
 					list = collection.getAll(),
 					listItems = list.map((bug, index) => (
-						<li key={index}>
-							<span className="bugname">{bug}</span>
-							<div className="datetime">[Created At]</div>
-						</li>
-					))
+						<BugItem bug={bug} key={index} />
+					)),
+					closedCount = list.reduce((result, bug) => bug.isClosed ? ++result : result, 0);
 				return(
 					<div>
 						<section className="stats">
-							<span className="span closed">1</span>
+							<span className="span closed">{closedCount}</span>
 							<span> / </span>
 							<span>{list.length}</span>
 						</section>
