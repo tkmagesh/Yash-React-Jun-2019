@@ -16,7 +16,7 @@
 				let productItems = this.state.productNames.map((productName, index) => (<li key={index}>{productName}</li>));
 				return(
 					<div>
-						<h1>Products</h1>
+						<h3>Products</h3>
 						<hr/>
 						<label>Product Name : </label>
 						<input type="text" onChange = { evt => this.setState({newProductName : evt.currentTarget.value}) }/>
@@ -28,7 +28,34 @@
 				)
 			}
 		}
-		ReactDOM.render(<Products/>,
+
+		class ProductsCount extends React.Component{
+			render(){
+				return(
+					<div>
+						<span> Count : {this.props.count} </span>
+					</div>
+				)
+			}
+		}
+
+		class MyApp extends React.Component{
+			render(){
+				return(
+					<div>
+						<h1>My App</h1>
+						<hr/>
+						<div>
+							<ProductsCount count="0">
+						</div>
+						<div>
+							<Products/>
+						</div>
+					</div>
+				)
+			}
+		}
+		ReactDOM.render(<MyApp/>,
 			document.getElementById('root'));
 	</script>
 </head>

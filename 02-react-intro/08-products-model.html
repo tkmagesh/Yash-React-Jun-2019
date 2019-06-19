@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Products</title>
+	<script src="react.development.js"></script>
+	<script src="react-dom.development.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+
+		class EventEmitter {
+			_subscribers = [];
+
+			subscribe = (subscriptionFn) => {
+				this._subscribers.push(subscriptionFn);
+			};
+
+			triggerChange = () => {
+				this._subscribers.forEach((subscriptionFn) => {
+					if (typeof subscriptionFn === 'function')
+						subscriptionFn();
+				});
+			}
+		}
+
+		class ProductsModel extends EventEmitter{
+			_list = [];
+
+			addNew(productName){
+				this._list.push(productName);
+				this.triggerChange();
+			}
+
+			getCount(){
+				return this._list.length;
+			}
+
+			getAll(){
+				return [...this._list];
+			}
+		}
+
+		class Products extends React.Component{
+			state = { 
+				newProductName : '',
+			};
+			render(){
+				let { model } = this.props,
+					productNames = model.getAll();
+				let productItems = productNames.map((productName, index) => (<li key={index}>{productName}</li>));
+				return(
+					<div>
+						<h3>Products</h3>
+						<hr/>
+						<label>Product Name : </label>
+						<input type="text" onChange = { evt => this.setState({newProductName : evt.currentTarget.value}) }/>
+						<input type="button" value="Add New" onClick={ () => model.addNew(this.state.newProductName)}/>
+						<ol>
+							{productItems}
+						</ol>
+					</div>
+				)
+			}
+		}
+
+		class ProductsCount extends React.Component{
+			render(){
+				return(
+					<div>
+						<span> Count : {this.props.count} </span>
+					</div>
+				)
+			}
+		}
+
+		class MyApp extends React.Component{
+			render(){
+				return(
+					<div>
+						<h1>My App</h1>
+						<hr/>
+						<div>
+							<ProductsCount count={this.props.model.getCount()} />
+						</div>
+						<div>
+							<Products model={this.props.model}/>
+						</div>
+					</div>
+				)
+			}
+		}
+
+		let model = new ProductsModel();
+		function renderApp(){
+			ReactDOM.render(<MyApp model={model}/>,
+				document.getElementById('root'));
+		}
+		renderApp();
+		model.subscribe(renderApp);
+	</script>
+</head>
+<body>
+	<div id="root">
+		
+	</div>
+</body>
+</html>
