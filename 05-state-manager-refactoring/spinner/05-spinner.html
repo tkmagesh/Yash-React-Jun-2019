@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>State Manager - demo</title>
+	<script src="stateManager.js"></script>
+	<script src="react.development.js"></script>
+	<script src="react-dom.development.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class Spinner extends React.Component{
+			onDecrementClick = () => {
+				this.props.down();
+			}
+			onIncrementClick = () => {
+				this.props.up();
+			}
+			render(){
+				let { dispatch, value } = this.props;
+				return(
+					<div>
+						<input type="button" value="Decrement" onClick={ this.onDecrementClick}/>
+						<span> [ {value} ] </span>
+						<input type="button" value="Increment" onClick={ this.onIncrementClick}/> 
+					</div>
+				)
+			}
+		}
+
+		let spinnerActionCreators = {
+			down(){
+				let action = { type : 'DOWN'};
+				return action;	
+			},
+			up(){
+				let action = { type : 'UP'};
+				return action;
+			}
+		}
+
+		function bindActionCreators(actionCreators, dispatch){
+			var actionDispatchers = {
+				down(){
+					let action = actionCreators.down();
+					dispatch(action);
+				},
+				up(){
+					let action = actionCreators.up();
+					dispatch(action);
+				}
+			};
+			return actionDispatchers;
+		}
+
+		function spinnerReducer(currentState = 0, action){
+			if ( action.type === 'UP' ) return ++currentState;
+			if ( action.type === 'DOWN') return --currentState;
+			return currentState;
+		}
+
+		var store = SM.createStore(spinnerReducer);
+
+		let actionDispatchers = bindActionCreators(spinnerActionCreators, store.dispatch);
+
+		function renderApp(){
+			let spinnerValue = store.getState();
+			/*ReactDOM.render(<Spinner value={spinnerValue} up={actionDispatchers.up} down={actionDispatchers.down}/>,
+				document.getElementById('root'));*/
+			ReactDOM.render(<Spinner value={spinnerValue} {...actionDispatchers} />,
+				document.getElementById('root'));
+		}
+		renderApp();
+		store.subscribe(renderApp);
+	</script>
+</head>
+<body>
+	<h1>Spinner</h1>
+	<hr>
+	<div id="root"></div> 
+</body>
+</html>
