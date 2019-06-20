@@ -14,13 +14,13 @@
 			onDepositClick = () => {
 				let { store } = this.props,
 					{ delta } = this.state,
-					
+					action = { type : 'DEPOSIT', payload : delta};
 				store.dispatch(action); 
 			}
 			onWithdrawClick = () => {
 				let { store } = this.props,
 					{ delta } = this.state,
-					
+					action = { type : 'WITHDRAW', payload : delta};
 				store.dispatch(action); 
 			}
 			render(){
@@ -38,18 +38,7 @@
 					</div>
 				)
 			}
-		}
-
-		let bankActionCreators = {
-			deposit(delta){
-				let action = { type : 'DEPOSIT', payload : delta};
-				return action;
-			},
-			withdraw(delta){
-				let action = { type : 'WITHDRAW', payload : delta};
-				return action;
-			}
-		}
+		}	
 		
 		function bankAccountReducer(currentState = 0, action){
 			console.log(arguments);
