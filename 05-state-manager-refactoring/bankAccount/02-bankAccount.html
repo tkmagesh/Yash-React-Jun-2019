@@ -6,25 +6,19 @@
 	<script src="react.development.js"></script>
 	<script src="react-dom.development.js"></script>
 	<script src="babel.min.js"></script>
-	<script src="stateManager.js"></script>
+	<script src="redux.js"></script>
 	<script type="text/babel">
-		class BankAccount extends React.Component{
+		{/*class BankAccount extends React.Component{
 			state = { delta : 0 };
 
 			onDepositClick = () => {
-				let { store } = this.props,
-					{ delta } = this.state,
-					
-				store.dispatch(action); 
+				this.props.deposit(this.state.delta);
 			}
 			onWithdrawClick = () => {
-				let { store } = this.props,
-					{ delta } = this.state,
-					
-				store.dispatch(action); 
+				this.props.withdraw(this.state.delta);
 			}
 			render(){
-				let balance = this.props.store.getState();
+				let { balance } = this.props;
 				return(
 					<div>
 						<div>
@@ -35,6 +29,26 @@
 						<input type="number" onChange={ evt => this.setState({delta : evt.target.valueAsNumber})} />
 						<input type="button" value="Deposit" onClick={this.onDepositClick}/>
 						<input type="button" value="Withdraw" onClick={this.onWithdrawClick}/>
+					</div>
+				)
+			}
+			}
+		*/}
+
+		class BankAccount extends React.Component{
+			state = { delta : 0 };
+			render(){
+				let { balance, withdraw, deposit } = this.props;
+				return(
+					<div>
+						<div>
+							<span>Balance : </span>
+							<span>{balance}</span>
+						</div>
+						<label htmlFor="">Amount : </label>
+						<input type="number" onChange={ evt => this.setState({delta : evt.target.valueAsNumber})} />
+						<input type="button" value="Deposit" onClick={() => deposit(this.state.delta)}/>
+						<input type="button" value="Withdraw" onClick={() => withdraw(this.state.delta)}/>
 					</div>
 				)
 			}
@@ -50,19 +64,35 @@
 				return action;
 			}
 		}
+
+		{/*function bindActionCreators(actionCreators, dispatch){
+			let actionDispatchers = {
+				deposit(delta){
+					let action = actionCreators.deposit(delta);
+					dispatch(action);
+				},
+				withdraw(delta){
+					let action = actionCreators.withdraw(delta);
+					dispatch(action);
+				}
+			};
+			return actionDispatchers;
+		}*/}
+
+		
 		
 		function bankAccountReducer(currentState = 0, action){
-			console.log(arguments);
 			if (action.type === 'DEPOSIT') return currentState + action.payload;
 			if (action.type === 'WITHDRAW') return currentState - action.payload;
 			return currentState;
 		}
 
-		let store = SM.createStore(bankAccountReducer);
+		let store = Redux.createStore(bankAccountReducer);
+		let actionDispatchers = Redux.bindActionCreators(bankActionCreators, store.dispatch);
 
 		function renderApp(){
-			console.log(store.getState());
-			ReactDOM.render(<BankAccount store={store}/>,
+			let balance = store.getState();
+			ReactDOM.render(<BankAccount balance={balance} {...actionDispatchers}/>,
 				document.getElementById('root'));
 		}
 		renderApp();
