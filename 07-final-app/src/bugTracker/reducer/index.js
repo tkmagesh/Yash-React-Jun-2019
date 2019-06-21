@@ -4,7 +4,10 @@ let defaultState = {
 };
 
 function bugsReducer(currentState = defaultState, action){
-	
+	if (action.type === 'LOAD'){
+		let newState = { ...currentState, bugs : action.payload};
+		return newState;
+	}
 	if (action.type === 'ADD_NEW'){
 		let newState = { ...currentState, bugs : [...currentState.bugs, action.payload]}
 		return newState;

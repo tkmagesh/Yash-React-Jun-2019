@@ -3,7 +3,9 @@ import axios from 'axios';
 const serviceEndPoint = 'http://localhost:3030/bugs';
 
 export function getAll(){
-	
+	return axios
+		.get(serviceEndPoint)
+		.then(response => response.data);
 
 }
 
