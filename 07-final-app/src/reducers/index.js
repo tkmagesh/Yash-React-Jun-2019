@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
 
-import bugsReducer from '../bugTracker/reducers';
+import bugsReducer from '../bugTracker/reducer';
+import { spinnerReducer } from '../spinner';
 
 let rootReducer = combineReducers({
-	bugState : bugsReducer
+	bugState : bugsReducer,
+	spinnerState : spinnerReducer
 });
 
 export default rootReducer;

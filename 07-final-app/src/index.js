@@ -4,10 +4,14 @@ import './index.css';
 import { Provider } from 'react-redux';
 import BugTracker from './bugTracker'
 import appStore from './store';
-
+import Spinner from './spinner'
 ReactDOM.render(
 	<Provider store={appStore}>
 		<div>
+			<h1>BugTracker</h1>
+			<hr/>
+			<Spinner/>
+			<hr/>
 			<BugTracker/>
 		</div>
 	</Provider>,

@@ -42,7 +42,7 @@ export default connect(
 */
 
 export default connect(
-	({bugState}) => ({ bugs : bugState})),
+	({bugState}) => ({ bugs : bugState}),
 	(dispatch) => bindActionCreators(bugActionsCreator, dispatch)
 )(BugTracker);
 
