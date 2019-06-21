@@ -11,12 +11,17 @@ import bugActionsCreator from './actions';
 
 class BugTracker extends Component{
 	render(){
-		let { bugs, addNew, toggle, removeClosed } = this.props;
+		let { bugs, addNew, toggle, removeClosed, toggleFilter, filtered } = this.props;
 			return(
 			<div>
+
 				<BugStats bugs={bugs} />
 				<BugSort />
 				<BugEdit addNew={addNew} />
+				<div>
+					<label>Apply Filter :</label>
+					<input type="checkbox" checked={filtered} onChange={toggleFilter} />
+				</div>
 				<BugList {...{bugs, toggle, removeClosed}} />
 			</div>
 		)
@@ -42,7 +47,15 @@ export default connect(
 */
 
 export default connect(
-	({bugState}) => ({ bugs : bugState}),
+	({bugState, spinnerState}) => {
+		let currentBugs = bugState.bugs,
+			filtered = bugState.filtered;
+		if (filtered){
+			return { filtered, bugs : currentBugs.filter((bug, index) => index % 2 === spinnerState % 2)}
+		} else {
+			return { filtered, bugs : currentBugs};
+		}
+	},
 	(dispatch) => bindActionCreators(bugActionsCreator, dispatch)
 )(BugTracker);
 
