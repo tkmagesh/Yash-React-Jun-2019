@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from '../reducers';
-
+import thunk from 'redux-thunk';
 
 /*function loggerMiddleware({ getState, dispatch}){
 	return function (next){
@@ -15,6 +15,7 @@ import rootReducer from '../reducers';
 }*/
 
 let loggerMiddleware = ({getState, dispatch}) => next => action => {
+	if (typeof action !== 'object') return next(action);
 	console.group(action.type);
 	console.log('before -> ', getState());
 	next(action);
@@ -22,6 +23,13 @@ let loggerMiddleware = ({getState, dispatch}) => next => action => {
 	console.groupEnd();
 }
 
-let appStore = createStore(rootReducer, applyMiddleware(loggerMiddleware));
+/*let asyncMiddleware = ({getState, dispatch}) => next => action => {
+	if (typeof action === 'function')
+		return action(dispatch, getState);
+	return next(action);
+}
 
+let appStore = createStore(rootReducer, applyMiddleware(loggerMiddleware, asyncMiddleware));*/
+
+let appStore = createStore(rootReducer, applyMiddleware(loggerMiddleware, thunk));*/
 export default appStore;

@@ -4,18 +4,30 @@ import * as ReactRedux from 'react-redux';
 
 let spinnerActionCreators = {
 	down(){
-		let action = { type : 'DOWN'};
-		return action;	
+		return function(dispatch, getState){
+			let currentSpinnerValue = getState().spinnerState;
+			setTimeout(function(){
+				let newValue = --currentSpinnerValue;
+				let action = { type : 'UPDATE', payload : newValue};
+				dispatch(action);	
+			}, 4000);
+		}
 	},
 	up(){
-		let action = { type : 'UP'};
-		return action;
+		return function(dispatch, getState){
+			let currentSpinnerValue = getState().spinnerState;
+			setTimeout(function(){
+				let newValue = ++currentSpinnerValue;
+				let action = { type : 'UPDATE', payload : newValue};
+				dispatch(action);	
+			}, 4000);
+			
+		}
 	}
 }
 
 export function spinnerReducer(currentState = 0, action){
-	if ( action.type === 'UP' ) return ++currentState;
-	if ( action.type === 'DOWN') return --currentState;
+	if ( action.type === 'UPDATE' ) return action.payload;
 	return currentState;
 }
 
