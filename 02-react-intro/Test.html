@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Component Intro</title>
+	<style>
+		.highlight{
+			color : blue;
+			font-size : 18pt;
+		}
+	</style>
+	<script src="react.development.js"></script>
+	<script src="react-dom.development.js"></script>
+	<script src="babel.min.js"></script>
+	
+</head>
+<body>
+	<div id="root"></div>
+</body>
+<script type="text/babel">
+		class Calculator extends React.Component{
+
+			txtFirstValue = React.createRef();
+			txtSecondValue = React.createRef();
+
+			state = { result :null};
+
+			// Button event.
+			onButtonClick = (operator) => {
+
+				var v1 = parseInt(this.txtFirstValue.current.value);
+				var v2 = parseInt(this.txtSecondValue.current.value);
+				var res = eval(`${v1} ${operator} ${v2}`);
+				this.setState({result: res})
+			}
+
+
+			render(){
+				return(
+					<section>
+						<h1>Calculator</h1>
+						<hr/>
+						<input type="number" ref={this.txtFirstValue}/>
+						<input type="number" ref={this.txtSecondValue}/>
+						<br/>
+						<input type="button" value="Add" onClick={() => this.onButtonClick('+')}/>
+						<input type="button" value="Subtract" onClick={() => this.onButtonClick('-')} />
+						<input type="button" value="Multiply" onClick={() => this.onButtonClick('*')} />
+						<input type="button" value="Divide" onClick={() => this.onButtonClick('/')} />
+						<div>{this.state.result}</div>
+					</section>
+				)
+			}
+		}
+		ReactDOM.render(<Calculator/>,document.getElementById('root'));
+	</script>
+</html>
