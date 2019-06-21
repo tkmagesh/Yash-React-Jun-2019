@@ -31,5 +31,8 @@ let loggerMiddleware = ({getState, dispatch}) => next => action => {
 
 let appStore = createStore(rootReducer, applyMiddleware(loggerMiddleware, asyncMiddleware));*/
 
-let appStore = createStore(rootReducer, applyMiddleware(loggerMiddleware, thunk));*/
+let appStore = createStore(rootReducer, applyMiddleware(loggerMiddleware, thunk));
+
 export default appStore;
+
+
